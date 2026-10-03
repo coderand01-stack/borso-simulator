@@ -226,7 +226,7 @@ function loadHD(onProgress) {
 }
 // Sacrario del Monte Grappa, sulla vetta fuori dall'area di gioco: meno nebbia del resto, illuminato di notte
 function hdSacrario(root) {
-  const mat = new THREE.MeshLambertMaterial({ vertexColors: true, emissive: 0xfff2d8, emissiveIntensity: 0 });
+  const mat = new THREE.MeshLambertMaterial({ vertexColors: true, emissive: 0xfff2d8, emissiveIntensity: 0, side: THREE.DoubleSide }); // i loculi sono quadrati singoli
   mat.onBeforeCompile = sh => { sh.fragmentShader = sh.fragmentShader.replace('#include <fog_fragment>', '#ifdef USE_FOG\n  gl_FragColor.rgb = mix(gl_FragColor.rgb, fogColor, smoothstep(fogNear, fogFar, fogDepth) * 0.55);\n#endif'); };
   root.traverse(o => { if (!o.isMesh) return; hdFixColors(o.geometry); o.material = mat; o.castShadow = false; o.receiveShadow = false; });
   root.updateMatrixWorld(true); root.traverse(o => { o.matrixAutoUpdate = false; });

@@ -8,7 +8,7 @@ Blender (hd/models/world.glb) is loaded instead. Re-run after editing the origin
 import os
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-src = open(os.path.join(ROOT, 'Borso Simulator (2).html'), encoding='utf-8').read()
+src = open(os.path.join(ROOT, 'index.html'), encoding='utf-8').read()
 
 
 def rep(s, old, new, count=1):
@@ -89,9 +89,9 @@ s = rep(s, """    if (c === player.inCar) continue; const ddx = a.pos.x - c.pos.
 s = rep(s, "const dx = x - c.pos.x, dz = z - c.pos.z; if (dx * dx + dz * dz < c.radius * c.radius && y < c.pos.y + 1.8) {",
         "if (carPointDist(c, x, z).d < c.hw + 0.1 && y < c.pos.y + 1.8) {")
 
-# LAYOUT_V2 = True cambia il layout (case lontane dagli ingressi, vetta del Grappa spianata):
-# va attivato solo insieme alla rigenerazione di layout.json e di world.glb in Blender.
-LAYOUT_V2 = False
+# LAYOUT_V2: case lontane dagli ingressi (chiesa di Semonzo, cimitero) e vetta del Grappa spianata.
+# world.glb e tools/out/layout.json sono costruiti con questo layout: se lo cambi, rigenerali entrambi.
+LAYOUT_V2 = True
 # --- ingressi liberi: niente case davanti al sagrato di Semonzo e al cancello del cimitero, né sugli oggetti delle quest
 if LAYOUT_V2: s = rep(s, "  drapedArea(-30, -9.6, 16, 6, 'cobble', 0xd8cfc0, 0.11, 0.25);     // plateatico osteria\n",
         "  drapedArea(-30, -9.6, 16, 6, 'cobble', 0xd8cfc0, 0.11, 0.25);     // plateatico osteria\n"
@@ -106,7 +106,7 @@ if LAYOUT_V2: s = rep(s, "  if (z > 250) { const t = z - 250; h += t * 0.12 + Ma
         "  if (HD && h > 500) h = 500 + 40 * (1 - Math.exp(-(h - 500) / 40)); // altopiano\n"
         "  if (HD && SAC.y !== null && z < -560) { const d = Math.hypot(x - SAC.x, z - SAC.z); if (d < SAC.r1) { const t = clamp((SAC.r1 - d) / (SAC.r1 - SAC.r0), 0, 1); h += (SAC.y - h) * t * t * (3 - 2 * t); } }\n"
         "  return h;\n}\n"
-        "const SAC = { x: -40, z: -640, r0: 40, r1: 75, y: null }; SAC.y = Hbase(SAC.x, SAC.z); // piazzale del Sacrario del Grappa")
+        "const SAC = { x: -40, z: -640, r0: 34, r1: 52, y: null }; SAC.y = Hbase(SAC.x, SAC.z); // piazzale del Sacrario sulla cresta: dal paese si staglia contro il cielo")
 
 # --- traffico: svolte agli incroci (hdLaneStep in hd_block.js)
 s = rep(s, "  if (c.s >= L.len - 2) { c.lane = L.pair; c.s = 2; lanePoint(c.lane, c.s, _lp); c.pos.x = _lp.x; c.pos.z = _lp.z; const q = lanePoint(c.lane, c.s + 3, {}); c.heading = Math.atan2(q.x - _lp.x, q.z - _lp.z); }\n",

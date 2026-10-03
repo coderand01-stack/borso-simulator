@@ -450,8 +450,11 @@ function Hbase(x, z) {
   if (x > 300) { const t = x - 300; h += t * 0.3 + t * t * 0.004; }
   if (x < -472) { const t = -472 - x; h += t * 0.3 + t * t * 0.004; }
   if (z > 250) { const t = z - 250; h += t * 0.12 + Math.sin(x * 0.03) * t * 0.05; }
+  if (HD && h > 500) h = 500 + 40 * (1 - Math.exp(-(h - 500) / 40)); // altopiano
+  if (HD && SAC.y !== null && z < -560) { const d = Math.hypot(x - SAC.x, z - SAC.z); if (d < SAC.r1) { const t = clamp((SAC.r1 - d) / (SAC.r1 - SAC.r0), 0, 1); h += (SAC.y - h) * t * t * (3 - 2 * t); } }
   return h;
 }
+const SAC = { x: -40, z: -640, r0: 34, r1: 52, y: null }; SAC.y = Hbase(SAC.x, SAC.z); // piazzale del Sacrario sulla cresta: dal paese si staglia contro il cielo
 GRAPPA_T.y = Hbase(GRAPPA_T.cx, -322); // terrazzo alla quota del suo bordo sud: niente scarpate davanti
 function H(x, z) {
   const h = Hbase(x, z);
@@ -912,6 +915,8 @@ let campanileClocks = [];
   drapedArea(-52, -16, 14, 6, 'plain', 0xcdb88e, 0.1);              // campo da bocce
   drapedArea(62, -36, 30, 24, 'plain', 0x9aa07a, 0.08);             // cimitero
   drapedArea(-30, -9.6, 16, 6, 'cobble', 0xd8cfc0, 0.11, 0.25);     // plateatico osteria
+  if (HD) { reserved.push({ x0: -199, x1: -177, z0: -30, z1: -10 }, { x0: 45, x1: 79, z0: -25, z1: -4 }); // sagrato di Semonzo, ingresso del cimitero
+    for (const [qx, qz] of [[206, 50], [-226, 78.5], [66, -30], [13.8, -106.4], [-221, 80]]) reserved.push({ x0: qx - 3, x1: qx + 3, z0: qz - 3, z1: qz + 3 }); }
 
   // ---- Osteria Canal ----
   {
@@ -2976,7 +2981,7 @@ function loadHD(onProgress) {
 }
 // Sacrario del Monte Grappa, sulla vetta fuori dall'area di gioco: meno nebbia del resto, illuminato di notte
 function hdSacrario(root) {
-  const mat = new THREE.MeshLambertMaterial({ vertexColors: true, emissive: 0xfff2d8, emissiveIntensity: 0 });
+  const mat = new THREE.MeshLambertMaterial({ vertexColors: true, emissive: 0xfff2d8, emissiveIntensity: 0, side: THREE.DoubleSide }); // i loculi sono quadrati singoli
   mat.onBeforeCompile = sh => { sh.fragmentShader = sh.fragmentShader.replace('#include <fog_fragment>', '#ifdef USE_FOG\n  gl_FragColor.rgb = mix(gl_FragColor.rgb, fogColor, smoothstep(fogNear, fogFar, fogDepth) * 0.55);\n#endif'); };
   root.traverse(o => { if (!o.isMesh) return; hdFixColors(o.geometry); o.material = mat; o.castShadow = false; o.receiveShadow = false; });
   root.updateMatrixWorld(true); root.traverse(o => { o.matrixAutoUpdate = false; });

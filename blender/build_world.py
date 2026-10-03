@@ -52,7 +52,16 @@ def Hbase(x, z):
     tx = x - 300; h = h + np.where(x > 300, tx * 0.3 + tx * tx * 0.004, 0)
     tx = -472 - x; h = h + np.where(x < -472, tx * 0.3 + tx * tx * 0.004, 0)
     tz = z - 250; h = h + np.where(z > 250, tz * 0.12 + np.sin(x * 0.03) * tz * 0.05, 0)
+    # (HD) above 500 m the massif flattens into a plateau; the Sacrario stands on a levelled square at the top
+    h = np.where(h > 500, 500 + 40 * (1 - np.exp(-np.maximum(h - 500, 0) / 40)), h)
+    if SAC['y'] is not None:
+        d = np.hypot(x - SAC['x'], z - SAC['z']); t = np.clip((SAC['r1'] - d) / (SAC['r1'] - SAC['r0']), 0, 1)
+        h = h + np.where(z < -560, (SAC['y'] - h) * t * t * (3 - 2 * t), 0)
     return h
+
+
+SAC = dict(x=-40.0, z=-640.0, r0=34.0, r1=52.0, y=None)  # same as SAC in the game (tools/make_hd.py)
+SAC['y'] = float(Hbase(SAC['x'], SAC['z']))  # on the crest: seen from the town it stands against the sky
 
 
 GT['y'] = float(Hbase(GT['cx'], -322))
@@ -1287,6 +1296,8 @@ def build_forest():
             x = gx + (hr(gx, gz, 1) - 0.5) * step * 0.9; z = gz + (hr(gx, gz, 2) - 0.5) * step * 0.9
             if WB['x0'] - 25 < x < WB['x1'] + 25 and z > WB['z0'] - 25:
                 continue
+            if math.hypot(x - SAC['x'], z - SAC['z']) < SAC['r1'] + 25 or (abs(x - SAC['x']) < 18 and SAC['z'] - 200 < z < SAC['z']):
+                continue  # Sacrario, Via Eroica e Portale liberi
             fm = float(forest_mask(np.array([x]), np.array([z]))[0])
             h = H(x, z)
             if h > 640 or hr(gx, gz, 3) > fm * 0.9:

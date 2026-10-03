@@ -51,7 +51,7 @@ DUMP = r"""
     L.colliders = colliders.map(c => [c.x0, c.z0, c.x1, c.z1, c.top, c.tag || '']);
     L.reserved = reserved; L.LOC = LOC; L.WB = WB; L.GRAPPA_T = GRAPPA_T; L.DECK_H = DECK_H;
     L.clocks = campanileClocks.map(p => p.toArray());
-    const hs = []; for (let z = -780; z <= 420; z += 20) for (let x = -700; x <= 700; x += 20) hs.push([x, z, H(x, z)]);
+    const hs = []; for (let z = -780; z <= 420; z += 20) for (let x = -700; x <= 700; x += 20) hs.push([x, z, (HDM.surf ? HDM.surf.H0 : H)(x, z)]); // H() analitica, non quella del terreno disegnato
     L.hsamples = hs;
     fetch('/save?name=layout.json', { method: 'POST', body: JSON.stringify(L) }).then(r => r.text()).then(t => { document.title = 'DUMP ' + t; dumpRooms(); });
   }

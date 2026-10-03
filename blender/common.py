@@ -103,6 +103,15 @@ def _color_source(nt):
             sock = d.inputs['Color']
     if sock is None:
         return None, (0.8, 0.8, 0.8, 1), 1.0, None
+    # spec-gloss metals: black diffuse, the colour lives in the specular (Glossy) map
+    gl = next((n for n in nt.nodes if n.type == 'BSDF_GLOSSY' and n.inputs['Color'].is_linked), None)
+    if not bs and gl and sock.is_linked and sock.links[0].from_node.type == 'TEX_IMAGE':
+        dimg = sock.links[0].from_node.image
+        px = np.empty(len(dimg.pixels), np.float32) if dimg is not None else None
+        if px is not None:
+            dimg.pixels.foreach_get(px)
+        if px is not None and px.reshape(-1, 4)[:, :3].mean() < 0.03:
+            sock = gl.inputs['Color']
     alpha = bs.inputs['Alpha'].default_value if bs else 1.0
     if not sock.is_linked:
         return None, tuple(sock.default_value), alpha, None

@@ -114,19 +114,12 @@ def build_church():
     pews = instance_copies(pew, mats, c, 'pew')
     for o in pew:
         bpy.data.objects.remove(o, do_unlink=True)
-    # wooden cross hanging above the altar, graal + bible on the altar
+    # wooden cross hanging above the altar
     cross = add_asset('wooden_cross.glb', c, Matrix.Identity(4), 'crosssrc_')
     mn, mx = bbox(cross); h = mx[2] - mn[2]
     for o in cross:
         o.data.transform(game_matrix(0, altar_top + 2.6, -12.6, math.pi / 2, 2.4 / h) @ Matrix.Translation(-Vector(((mn + mx) / 2).tolist())))
-    graal = add_asset('santo_graal.glb', c, Matrix.Identity(4), 'graal_', decim=4000)
-    mn, mx = bbox(graal); h = mx[2] - mn[2]
-    for o in graal:
-        o.data.transform(game_matrix(0, altar_top, -10.4, 0, 0.32 / h) @ Matrix.Translation(-Vector(((mn[0] + mx[0]) / 2, (mn[1] + mx[1]) / 2, mn[2]))))
-    bible = add_asset('holy_bible.glb', c, Matrix.Identity(4), 'bible_', decim=2500)
-    mn, mx = bbox(bible); L_ = max(mx[0] - mn[0], mx[1] - mn[1])
-    for o in bible:
-        o.data.transform(game_matrix(-0.75, altar_top, -10.3, 0.4, 0.34 / L_) @ Matrix.Translation(-Vector(((mn[0] + mx[0]) / 2, (mn[1] + mx[1]) / 2, mn[2]))))
+    # calice (Graal) e Bibbia non stanno sull'altare: sono oggetti della quest di Binea (models/items.glb)
     # confessional (right aisle) and candle stand (left aisle)
     extra = []
     wd = 0x4a2c1a
@@ -137,9 +130,9 @@ def build_church():
     for i in range(10):
         x = -9.55 + (i % 5) * 0.27; z = -6.15 + (i // 5) * 0.3
         extra.append(cyl(c, f'lum_{i}', x, 1.02, z, 0.045, 0.12, 0xf4efe0, 8))
-    for o in objs + pews + cross + graal + bible:
+    for o in objs + pews + cross:
         o.data.polygons.foreach_set('use_smooth', [False] * len(o.data.polygons))
-    allo = objs + pews + cross + graal + bible + extra
+    allo = objs + pews + cross + extra
     slim_materials(allo, 512, big={'mur-bas': 1024, 'mur-haut': 1024, 'colonne': 1024, 'arche': 1024})
     with contextlib.redirect_stdout(io.StringIO()):
         root, size = export(allo, 'room_chiesa', 'room_chiesa.glb')
