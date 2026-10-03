@@ -1,0 +1,52 @@
+BORSO SIMULATOR HD
+==================
+
+Versione del gioco con mappa, veicoli, personaggi e interni costruiti in Blender
+(stesse coordinate, collisioni e missioni dell'originale "Borso Simulator (2).html",
+che resta intatto).
+
+Contenuto di questa cartella (va pubblicata così com'è):
+  index.html              il gioco
+  models/world.glb        la mappa (terreno, strade, case, chiese, alberi...) - Draco
+  models/church_se.glb    chiesa di Sant'Eulalia (assets/church.glb)
+  models/panda.glb        Fiat Panda 4x4 (ruote separate, vernice tintabile)
+  models/cinquecento.glb  Fiat 500
+  models/multipla.glb     Fiat Multipla
+  models/trattore.glb     trattore David Brown 25D
+  models/chars.glb        parti dei personaggi (teste, cappelli, busti, braccia, gambe...)
+  models/rooms.glb        interni rifatti in Blender (osteria, farmacia, tabacchi, pizzeria,
+                          scuola parapendio, alimentari, Cuba Mia, malga)
+  models/room_chiesa.glb  interno della chiesa di Semonzo (assets/old_church...) con panche,
+                          croce, Graal e Bibbia dagli asset
+  models/room_bar.glb     Bar Sport (assets/old_bar.glb) + biliardino
+  textures/*.png          texture procedurali (coppi, intonaco, pietra, porfido, piastrelle...)
+
+Gli interni vengono caricati in sottofondo dopo la schermata del titolo.
+
+COME GIOCARE IN LOCALE
+Il browser non carica i file .glb aprendo index.html con doppio clic: serve un
+piccolo server web. Dalla cartella del progetto:
+
+    python tools/devserver.py
+
+poi apri http://localhost:8765/hd/
+
+SU TELEFONO
+Pubblica la cartella hd/ su un hosting statico (GitHub Pages, Netlify, ...).
+three.js e il decoder Draco arrivano da CDN, quindi serve la connessione.
+
+RIGENERARE DOPO UNA MODIFICA
+  - Logica di gioco: modifica "Borso Simulator (2).html" (o tools/hd_block.js per la parte HD),
+        python tools/make_hd.py              (riscrive hd/index.html)
+  - Layout (case, alberi, cartelli) e stanze:
+        python tools/make_instrumented.py, poi apri http://localhost:8765/tools/instrumented.html
+        (salva tools/out/layout.json e tools/out/rooms.json)
+  - In Blender (blender/borso_world.blend), da Scripting, eseguendo con exec() questi file:
+        blender/build_world.py      build(); export_glb()            mappa
+        blender/build_church.py     build(H) + export                Sant'Eulalia
+        blender/build_cars.py       build_panda(); build_car('cinquecento'|'multipla')
+        blender/build_vehicles.py   build_tractor()
+        blender/build_chars.py      build(); export(objs)            personaggi
+        blender/build_interiors.py  build_church(); build_bar()      chiesa di Semonzo, bar
+        blender/build_rooms.py      build()                          altri interni
+        blender/textures.py         build_all()                      texture

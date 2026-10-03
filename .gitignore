@@ -1,0 +1,11 @@
+# Folders to ignore
+.claude
+backup
+assets
+
+blender/borso_world.blend
+blender/borso_world.blend1
+
+# Environment variables and files
+.env
+.env/local
