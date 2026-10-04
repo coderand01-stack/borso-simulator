@@ -1,4 +1,4 @@
-"""Sant'Eulalia church from assets/church.glb -> hd/models/church_se.glb.
+"""Sant'Eulalia church from assets/church.glb -> docs/models/church_se.glb.
 
 Placement matches seChurch() in tools/make_hd.py (colliders): the model's portal already faces -Y
 (= game +Z, towards the piazza); scaled x2.4, nave centred on game x=170, porch front at game z=-29.5.
@@ -38,7 +38,7 @@ def build(Hfun):
 
 
 def export(root, meshes):
-    path = os.path.join(ROOT, "hd", "models", "church_se.glb")
+    path = os.path.join(ROOT, "docs", "models", "church_se.glb")
     bpy.ops.object.select_all(action='DESELECT')
     root.select_set(True)
     for m in meshes:

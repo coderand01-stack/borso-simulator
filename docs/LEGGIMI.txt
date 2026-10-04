@@ -26,6 +26,25 @@ Contenuto di questa cartella (va pubblicata così com'è):
 
 Gli interni vengono caricati in sottofondo dopo la schermata del titolo.
 
+MULTIPLAYER («Gioca online» nella schermata del titolo)
+Uno crea una stanza e passa agli amici il codice di 4 caratteri (o il link con ?room=CODICE);
+gli altri entrano con quel codice. Massimo 6 giocatori.
+  - Mondo condiviso: maranza, ladri, civili, traffico, orologio, missioni e quest (Binea, Brayner,
+    tedeschi, grappa del 1803). Una missione completata la completano tutti, con i premi.
+  - Personale: schei, armi e munizioni, salute, inventario, potenziamenti, lavoretti di Zazza.
+    Il salvataggio online è separato da quello in singolo (chiave borsoSim_mp nel browser).
+  - Il mondo lo fa girare il giocatore "host" (il primo arrivato). Se esce o mette il gioco in
+    secondo piano, il server passa il compito a un altro giocatore senza perdere nulla.
+  - T apre la chat (su telefono il pulsante 💬).
+Server: cartella server/ (Node.js + WebSocket), pubblicato su Render:
+    https://borso-simulator.onrender.com   (stato: /health)
+  piano gratuito: dopo 15 minuti senza giocatori si spegne e il primo accesso lo risveglia in
+  30-60 secondi (il gioco lo aspetta da solo). Non serve un database: le stanze vivono in memoria
+  e l'avanzamento è salvato nel browser di ogni giocatore.
+  Variabili su Render: ALLOWED_ORIGINS (https://coderand01-stack.github.io), MAX_PLAYERS.
+  Prova in locale: node server/index.js (porta 8787) e il gioco su localhost lo usa da solo;
+  per un altro server: ...docs/?server=wss://indirizzo. Test del server: cd server && npm test.
+
 PERSONAGGI
 Ogni personaggio è una mesh unica con scheletro (bacino, busto, testa, cosce, stinchi, piedi,
 braccia, avambracci, mani). Il gioco muove anche e spalle come prima; tools/hd_rig.js aggiunge
@@ -37,16 +56,16 @@ piccolo server web. Dalla cartella del progetto:
 
     python tools/devserver.py
 
-poi apri http://localhost:8765/hd/
+poi apri http://localhost:8765/docs/
 
 SU TELEFONO
-Pubblica la cartella hd/ su un hosting statico (GitHub Pages, Netlify, ...).
+Pubblica la cartella docs/ su un hosting statico (GitHub Pages, Netlify, ...).
 three.js e il decoder Draco arrivano da CDN, quindi serve la connessione.
 
 RIGENERARE DOPO UNA MODIFICA
   - Logica di gioco: modifica index.html nella radice (o tools/hd_block.js, tools/hd_rig.js per la
-    parte HD), poi
-        python tools/make_hd.py              (riscrive hd/index.html)
+    parte HD, tools/hd_net.js e tools/net_patches.py per il multiplayer), poi
+        python tools/make_hd.py              (riscrive docs/index.html)
   - Layout (case, alberi, cartelli) e stanze:
         python tools/make_instrumented.py, poi apri http://localhost:8765/tools/instrumented.html
         (salva tools/out/layout.json e tools/out/rooms.json)

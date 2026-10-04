@@ -1,8 +1,8 @@
-"""Generates hd/index.html (Borso Simulator HD) from the original game.
+"""Generates docs/index.html (Borso Simulator HD) from the original game.
 
 The original world-building code still runs, so colliders, houses, quests and the seeded
 layout stay identical, but its procedural meshes are switched off and the world built in
-Blender (hd/models/world.glb) is loaded instead. Re-run after editing the original:
+Blender (docs/models/world.glb) is loaded instead. Re-run after editing the original:
     python tools/make_hd.py
 """
 import os
@@ -24,7 +24,7 @@ s = rep(s, '<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/th
         '<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>\n'
         '<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>\n'
         '<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/DRACOLoader.js"></script>')
-s = rep(s, 'const LOWQ = IS_TOUCH;', 'const LOWQ = IS_TOUCH;\nconst HD = true; // grafica da hd/models/*.glb: la geometria procedurale non viene disegnata\nconst HDM = { pendingChars: [], cars: {} };')
+s = rep(s, 'const LOWQ = IS_TOUCH;', 'const LOWQ = IS_TOUCH;\nconst HD = true; // grafica da docs/models/*.glb: la geometria procedurale non viene disegnata\nconst HDM = { pendingChars: [], cars: {} };')
 
 # --- the procedural meshes are replaced by the .glb (colliders and layout logic stay)
 s = rep(s, '(function buildTerrain() {', '(function buildTerrain() {\n  if (HD) return;')
@@ -158,8 +158,11 @@ s = rep(s, "  for (let i = 0; i < (LOWQ ? 5 : 8); i++) spawnTrafficCar(false);\n
         "  GS.night = isNightT(GS.time); applyTime();\n  requestAnimationFrame(loop);\n"
         "  loadHD(p => { $('loading').textContent = 'Carico Borso… ' + Math.round(p * 100) + '% (scaldo la grappa)'; })\n"
         "    .then(() => { for (let i = 0; i < (LOWQ ? 5 : 8); i++) spawnTrafficCar(false); GS.mode = 'title'; $('loading').classList.add('hidden'); $('title').classList.remove('hidden'); loadHDInteriors(); })\n"
-        "    .catch(e => { console.error(e); $('loading').textContent = 'Non riesco a caricare la mappa HD. Apri il gioco da un server web (vedi hd/LEGGIMI.txt).'; });")
+        "    .catch(e => { console.error(e); $('loading').textContent = 'Non riesco a caricare la mappa HD. Apri il gioco da un server web (vedi docs/LEGGIMI.txt).'; });")
 
-os.makedirs(os.path.join(ROOT, 'hd'), exist_ok=True)
-open(os.path.join(ROOT, 'hd', 'index.html'), 'w', encoding='utf-8').write(s)
-print('hd/index.html', len(s))
+# --- multiplayer (tools/hd_net.js + agganci in tools/net_patches.py)
+exec(open(os.path.join(ROOT, 'tools', 'net_patches.py'), encoding='utf-8').read())
+
+os.makedirs(os.path.join(ROOT, 'docs'), exist_ok=True)
+open(os.path.join(ROOT, 'docs', 'index.html'), 'w', encoding='utf-8').write(s)
+print('docs/index.html', len(s))

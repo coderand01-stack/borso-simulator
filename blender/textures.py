@@ -1,11 +1,11 @@
 """Procedural, tileable textures for Borso Simulator HD.
-Run inside Blender (uses numpy + bpy to save PNGs into hd/textures/)."""
+Run inside Blender (uses numpy + bpy to save PNGs into docs/textures/)."""
 import os
 import numpy as np
 import bpy
 
 ROOT = r"C:\Coding\borso-simulator"
-OUT = os.path.join(ROOT, "hd", "textures")
+OUT = os.path.join(ROOT, "docs", "textures")
 os.makedirs(OUT, exist_ok=True)
 
 

@@ -1,0 +1,8 @@
+// Strumenti di prova del multiplayer (non pubblicati nel gioco): nella console di due schede, eval di questo file, poi await __host("A") / await __join("B", codice) e __step(n) per avanzare i fotogrammi a mano.
+window.__step = (n, dt=1/60) => { for (let i=0;i<n;i++){ window.__t = Math.max((window.__t||0) + dt*1000, lastT + dt*1000); loop(window.__t); } };
+window.__shot2 = (name, eye, tgt) => { if (eye) { camera.position.set(...eye); camera.lookAt(...tgt); camera.updateMatrixWorld(); } renderer.render(GS.inside ? GS.inside.S : scene, camera); const d = renderer.domElement.toDataURL('image/jpeg', 0.85); const x = new XMLHttpRequest(); x.open('POST', '/save?name=' + name + '.b64', false); x.send(d.split(',')[1]); return x.status; };
+window.__sleep = ms => new Promise(r => setTimeout(r, ms));
+renderer.setSize(960, 540, false); camera.aspect = 960/540; camera.updateProjectionMatrix();
+window.__host = async (name, li=1) => { $('btnOnline').click(); $('onName').value=name; [...$('onLooks').children][li].click(); $('btnOnCreate').click(); await new Promise(r=>{const t0=Date.now(); const w=()=>(NET.on||Date.now()-t0>15000)?r():setTimeout(w,300); w();}); if (talkS) talkEnd(); GS.mode='play'; return NET.room; };
+window.__join = async (name, room, li=0) => { $('btnOnline').click(); $('onName').value=name; $('onRoom').value=room; [...$('onLooks').children][li].click(); $('btnOnJoin').click(); await new Promise(r=>{const t0=Date.now(); const w=()=>(NET.on||Date.now()-t0>15000)?r():setTimeout(w,300); w();}); if (talkS) talkEnd(); GS.mode='play'; await __sleep(1200); __step(5); return NET.rep.size; };
+window.__b64 = (name) => name;

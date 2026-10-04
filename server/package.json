@@ -1,0 +1,17 @@
+{
+  "name": "borso-simulator-server",
+  "version": "1.0.0",
+  "description": "Server multiplayer di Borso Simulator: stanze, scelta dell'host e inoltro dei messaggi via WebSocket",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "start": "node index.js",
+    "test": "node test.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "ws": "^8.18.0"
+  }
+}

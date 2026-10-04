@@ -2,7 +2,7 @@
 
 Reads tools/out/layout.json (dumped from the original game by tools/instrumented.html)
 and rebuilds the whole map in Blender with richer low-poly geometry, then it can be
-exported to hd/models/world.glb.
+exported to docs/models/world.glb.
 
 Coordinates: everything is generated in GAME space (three.js, Y up) and converted to
 Blender space (Z up) only when meshes are created: (x, y, z)game -> (x, -z, y)blender.
@@ -15,7 +15,7 @@ import bpy, json, math, os
 import numpy as np
 
 ROOT = r"C:\Coding\borso-simulator"
-TEXDIR = os.path.join(ROOT, "hd", "textures")
+TEXDIR = os.path.join(ROOT, "docs", "textures")
 L = json.load(open(os.path.join(ROOT, "tools", "out", "layout.json"), encoding="utf-8"))
 
 # ============================================================== terrain height (port of the JS)
@@ -1349,7 +1349,7 @@ def build(stages=('terrain', 'roads', 'buildings', 'veg', 'props')):
 
 
 # ============================================================== export
-def export_glb(path=os.path.join(ROOT, "hd", "models", "world.glb"), draco=True):
+def export_glb(path=os.path.join(ROOT, "docs", "models", "world.glb"), draco=True):
     os.makedirs(os.path.dirname(path), exist_ok=True)
     bpy.ops.object.select_all(action='DESELECT')
     for o in COLL.objects:

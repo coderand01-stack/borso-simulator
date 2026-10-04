@@ -1,4 +1,4 @@
-"""Borso Simulator HD - Sacrario militare del Monte Grappa (hd/models/sacrario.glb).
+"""Borso Simulator HD - Sacrario militare del Monte Grappa (docs/models/sacrario.glb).
 
 Visual landmark on the summit, outside the playable area (game x=-40, z=-640, on the levelled square
 SAC of build_world.H). Low-poly but recognisable: five circular stepped tiers with rows of bronze niches,
@@ -172,7 +172,7 @@ def build():
     va.layer_name = 'Col'; nt.links.new(va.outputs['Color'], bs.inputs['Base Color']); bs.inputs['Roughness'].default_value = 0.9
     o.data.materials.clear(); o.data.materials.append(mat)
     bpy.ops.object.select_all(action='DESELECT'); o.select_set(True); bpy.context.view_layer.objects.active = o
-    path = os.path.join(ROOT, 'hd', 'models', 'sacrario.glb')
+    path = os.path.join(ROOT, 'docs', 'models', 'sacrario.glb')
     with contextlib.redirect_stdout(io.StringIO()):
         bpy.ops.export_scene.gltf(filepath=path, export_format='GLB', use_selection=True, export_yup=True, export_colors=True,
                                   export_normals=True, export_texcoords=False, export_materials='EXPORT',

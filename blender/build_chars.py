@@ -1,4 +1,4 @@
-"""Borso Simulator HD - character part library (hd/models/chars.glb).
+"""Borso Simulator HD - character part library (docs/models/chars.glb).
 
 Same blocky style and the same rig as the game's makeChar() (groups body/head/legL/legR/armL/armR,
 pivots and sizes unchanged), but every part is modelled with bevels and details.
@@ -262,7 +262,7 @@ def build():
 
 
 def export(objs):
-    path = os.path.join(ROOT, 'hd', 'models', 'chars.glb')
+    path = os.path.join(ROOT, 'docs', 'models', 'chars.glb')
     bpy.ops.object.select_all(action='DESELECT')
     for o in objs:
         o.select_set(True)

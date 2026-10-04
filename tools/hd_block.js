@@ -286,8 +286,8 @@ function hdAddDriver(car) {
 }
 function hdSeatUpdate(car) {
   const mine = player.inCar === car;
-  car.seatDriver.root.visible = car.driver && !mine;
-  car.seatBepi.root.visible = mine && !player.fps;
+  car.seatDriver.root.visible = car.driver && !mine && !car._peerDriven;
+  car.seatBepi.root.visible = (mine && !player.fps) || !!car._peerDriven; // online: al volante c'è un altro Bepi
 }
 
 /* ---------- personaggi: parti modellate in Blender (models/chars.glb) ---------- */

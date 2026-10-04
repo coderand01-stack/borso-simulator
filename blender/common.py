@@ -5,7 +5,7 @@ from mathutils import Matrix, Vector
 
 ROOT = r"C:\Coding\borso-simulator"
 ASSETS = os.path.join(ROOT, "assets")
-MODELS = os.path.join(ROOT, "hd", "models")
+MODELS = os.path.join(ROOT, "docs", "models")
 
 
 def coll(name, clear=True):

@@ -1,4 +1,4 @@
-"""Borso Simulator HD - shop/house interiors rebuilt in Blender (hd/models/rooms.glb).
+"""Borso Simulator HD - shop/house interiors rebuilt in Blender (docs/models/rooms.glb).
 
 Input: tools/out/rooms.json, captured from the game by tools/instrumented.html (exact boxes, cylinders,
 planes and lights of every room). Each static primitive is rebuilt with real materials (wood, tiles,
@@ -11,7 +11,7 @@ import bpy, math, os, json, colorsys, io, contextlib
 import numpy as np
 
 ROOT = r"C:\Coding\borso-simulator"
-TEXDIR = os.path.join(ROOT, "hd", "textures")
+TEXDIR = os.path.join(ROOT, "docs", "textures")
 ROOMS = json.load(open(os.path.join(ROOT, "tools", "out", "rooms.json"), encoding="utf-8"))
 
 MATS = {  # name: (texture, uv metres per tile)
@@ -267,7 +267,7 @@ def build(export=True):
         ob = to_object(R, c); objs.append(ob)
         ob.data.calc_loop_triangles(); log[key] = len(ob.data.loop_triangles)
     if export:
-        path = os.path.join(ROOT, 'hd', 'models', 'rooms.glb')
+        path = os.path.join(ROOT, 'docs', 'models', 'rooms.glb')
         bpy.ops.object.select_all(action='DESELECT')
         for o in objs:
             o.select_set(True)

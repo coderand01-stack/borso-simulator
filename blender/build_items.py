@@ -1,4 +1,4 @@
-"""Borso Simulator HD - sacred objects of Binea's quest (hd/models/items.glb).
+"""Borso Simulator HD - sacred objects of Binea's quest (docs/models/items.glb).
 
 Calice (assets/santo_graal.glb), Bibbia (assets/holy_bible.glb) and croce (assets/wooden_cross.glb) come from the
 assets; the altar-boy bell and the thurible are modelled here. Each item is one object named item_<name>,

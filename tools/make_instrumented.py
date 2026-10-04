@@ -5,7 +5,7 @@ import os, re
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # parte dalla versione HD (generata da tools/make_hd.py) così il layout segue le stesse regole del gioco HD
-src = open(os.path.join(ROOT, 'hd', 'index.html'), encoding='utf-8').read()
+src = open(os.path.join(ROOT, 'docs', 'index.html'), encoding='utf-8').read()
 
 HOOK = r"""
 /* ==== LAYOUT PROBE (instrumented build only) ==== */
