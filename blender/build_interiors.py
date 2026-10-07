@@ -109,8 +109,8 @@ def build_church():
     mats = []
     for row in range(9):
         gz = -3.2 + row * 1.15
-        for gx in (-3.85, -1.75, 1.75, 3.85):
-            mats.append(game_matrix(gx, 0, gz, math.pi) @ norm)
+        for gx in (3.85, 1.75, -1.75, -3.85):
+            mats.append(game_matrix(gx, 0, gz, math.pi*180) @ norm)
     pews = instance_copies(pew, mats, c, 'pew')
     for o in pew:
         bpy.data.objects.remove(o, do_unlink=True)

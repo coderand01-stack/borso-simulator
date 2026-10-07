@@ -347,7 +347,7 @@ body.standalone .pwa{display:none!important}
 
 <div id="install" class="overlay hidden" style="background:rgba(8,12,18,.8);z-index:26">
   <div class="panel"><h3>Installa Borso Simulator</h3><p id="installLead" style="margin:0 0 8px"></p><ol id="installSteps" style="margin:0;padding-left:22px"></ol><p id="installNote" style="margin:10px 0 0;font-size:15px;opacity:.85"></p></div>
-  <!-- <button class="bsign" style="margin-top:14px" id="btnInstallClose">Ho capito</button> -->
+  <button class="bsign" style="margin-top:14px" id="btnInstallClose">Ho capito</button>
 </div>
 
 <div id="shop" class="overlay hidden">
@@ -5535,7 +5535,7 @@ function setupPWA() {
   const canFs = !!(document.documentElement.requestFullscreen || document.documentElement.webkitRequestFullscreen);
   for (const id of ['btnFull', 'btnFull2']) { $(id).onclick = toggleFull; if (!canFs && !IS_IOS) $(id).classList.add('hidden'); }
   // for (const id of ['btnInstall', 'btnInstall2']) $(id).onclick = () => doInstall(id === 'btnInstall2' ? 'pause' : 'title');
-  // $('btnInstallClose').onclick = () => { $('install').classList.add('hidden'); if (installBack && $(installBack)) $(installBack).classList.remove('hidden'); installBack = null; };
+  $('btnInstallClose').onclick = () => { $('install').classList.add('hidden'); if (installBack && $(installBack)) $(installBack).classList.remove('hidden'); installBack = null; };
 }
 async function toggleFull() {
   const el = document.documentElement;
