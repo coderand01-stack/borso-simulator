@@ -9,3 +9,6 @@ blender/borso_world.blend1
 # Environment variables and files
 .env
 .env/local
+
+# generated launch-video work files
+brag-output/
